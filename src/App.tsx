@@ -11,7 +11,7 @@ const App: React.FC = () => {
         <h1 className="title">GenFlowly</h1>
       </header>
       <div className="lwg-button">
-        <GoogleOAuthProvider  clientId={GOOGLE_AUTH_CLIENT_ID}>
+        <GoogleOAuthProvider clientId={GOOGLE_AUTH_CLIENT_ID}>
           <LoginWithGoogle />
         </GoogleOAuthProvider>
       </div>
