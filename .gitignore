@@ -7,7 +7,6 @@
 # production
 *.d.ts
 /dist
-/public
 /build
 
 # misc
