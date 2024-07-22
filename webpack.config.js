@@ -45,8 +45,8 @@ module.exports = {
         './Shell': path.resolve(__dirname, './src/App.tsx'),
       },
       shared: {
-        react: { singleton: true , eager: true },
-        'react-dom': { singleton: true , eager: true },
+        react: { singleton: true, eager: true },
+        'react-dom': { singleton: true, eager: true },
       },
     }),
   ],
