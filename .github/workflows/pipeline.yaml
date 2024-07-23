@@ -39,6 +39,9 @@ jobs:
       - name: Debug .npmrc file
         run: cat ~/.npmrc
 
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install dependencies
         run: npm ci
         env:
