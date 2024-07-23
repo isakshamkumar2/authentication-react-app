@@ -3,7 +3,7 @@ name: Amplify Deploy
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build:
