@@ -21,7 +21,6 @@ jobs:
       - name: Update npm
         run: npm install -g npm@latest
 
-
       - name: Debug secrets
         run: |
           echo "GH_TOKEN: $GH_TOKEN"
@@ -36,11 +35,11 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> ~/.npmrc
           echo "@genflowly:registry=https://npm.pkg.github.com/" >> ~/.npmrc
-          echo "GH_TOKEN: $GH_TOKEN"
-          echo "AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
-          echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-
+      - name: Debug .npmrc file
+        run: cat ~/.npmrc
 
       - name: Install dependencies
         run: npm ci
