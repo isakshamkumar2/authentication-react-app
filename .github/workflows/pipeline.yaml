@@ -27,6 +27,9 @@ jobs:
           echo "@genflowly:registry=https://npm.pkg.github.com" >> ~/.npmrc
           npm config list
 
+      - name: Display .npmrc contents
+        run: cat ~/.npmrc
+
       - name: Display package.json contents
         run: cat package.json
 
