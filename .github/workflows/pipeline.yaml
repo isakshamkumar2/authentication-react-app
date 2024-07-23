@@ -23,7 +23,7 @@ jobs:
 
       - name: Authenticate npm with PAT
         run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" > ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
           echo "@genflowly:registry=https://npm.pkg.github.com" >> ~/.npmrc
           npm config list
 
