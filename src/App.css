@@ -1,0 +1,15 @@
+.App {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.lwg-button {
+  /*margin-top: 5vh;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

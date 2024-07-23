@@ -1,15 +1,14 @@
 import React from 'react';
-// import { GoogleOAuthProvider } from '@react-oauth/google';
-// import LoginWithGoogle from './components/LoginWithGoogle';
-// import { GOOGLE_AUTH_CLIENT_ID } from './utils/constants';
 import './App.css';
-import { BrowserRouter as Router } from 'react-router-dom';
-import AppRoutes from './AppRoutes';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Login from './components/LoginPage';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <AppRoutes />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </Router>
   );
 };
