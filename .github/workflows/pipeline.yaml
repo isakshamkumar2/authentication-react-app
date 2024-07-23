@@ -3,7 +3,7 @@ name: Amplify Deploy
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   build:
@@ -12,17 +12,16 @@ jobs:
       packages: read
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.5.0'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@genflowly'
 
-      - name: Update npm
-        run: npm install -g npm@latest
-      - name: Authenticate with GitHub Package Registry
+      - name: Authenticate npm with PAT
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
           echo "@genflowly:registry=https://npm.pkg.github.com" >> ~/.npmrc
@@ -30,6 +29,22 @@ jobs:
 
       - name: Check .npmrc content
         run: cat ~/.npmrc
+
+      - name: Debug token
+        run: echo "Token starts with ${NODE_AUTH_TOKEN:0:4}..."
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Test GitHub Package Registry authentication
+        run: |
+          PACKAGE_URL="https://npm.pkg.github.com/download/@genflowly/react-assets/0.1.118/a2abe9d7d889fd61d70716a95c2ff4b5a15aa6aa"
+          curl -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" $PACKAGE_URL
+
+      - name: List packages in @genflowly scope
+        run: npm list @genflowly --json
+
+      - name: Test access to public GitHub Package
+        run: npm view @actions/core
 
       - name: Install dependencies
         run: npm ci
