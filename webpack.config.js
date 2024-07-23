@@ -1,8 +1,7 @@
 /* eslint-disable */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 const webpack = require('webpack');
 const deps = require('./package.json').dependencies;
@@ -12,7 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './build'),
     filename: 'bundle.js',
-    publicPath: 'https://main.d2wm4ff60bmrs6.amplifyapp.com/',
+    publicPath: 'http://localhost:3000/',
   },
   stats: {
     errorDetails: true,
@@ -32,6 +31,9 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }),
     new webpack.ProgressPlugin({
       activeModules: true,
     }),
@@ -43,10 +45,13 @@ module.exports = {
       filename: 'remoteEntry.js',
       exposes: {
         './Shell': path.resolve(__dirname, './src/App.tsx'),
+        './styles': path.resolve(__dirname, './src/styles/lightTheme.scss'),
       },
       shared: {
-        react: { singleton: true, eager: true },
-        'react-dom': { singleton: true, eager: true },
+        react: { singleton: true, requiredVersion: false, eager: true },
+        'react-dom': { singleton: true, requiredVersion: false, eager: true },
+        'css-loader': { singleton: true },
+        'style-loader': { singleton: true },
       },
     }),
   ],
@@ -61,8 +66,31 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        test: /\.module\.scss$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]___[hash:base64:5]',
+                exportLocalsConvention: 'camelCase',
+              },
+              sourceMap: true,
+              importLoaders: 1,
+            },
+          },
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.scss$/,
+        exclude: /\.module\.scss$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
